@@ -1,12 +1,14 @@
 import sys
 import json
-import joblib
+import pickle
+from models import split_into_lemmas
 # need to import the split into lemmas function 
 
-model = joblib.load('model.pkl')
+with open('model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
 def classify(input_value):
-    result = model.predict([input_value])
+    result = model.predict([input_value])[0]
     return result[0]
 
 if __name__ == '__main__':

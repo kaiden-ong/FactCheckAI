@@ -14,11 +14,13 @@ function App() {
       body: JSON.stringify({input}),
     });
     const data = await response.json();
-    if (data.result === 0) {
-      setResult("Fake News");
-    } else {
-      setResult("Real News")
-    }
+    console.log(data)
+    setResult(data)
+    // if (data.result === 0) {
+    //   setResult("Fake News");
+    // } else {
+    //   setResult("Real News")
+    // }
   };
 
   return (
