@@ -15,12 +15,11 @@ function App() {
     });
     const data = await response.json();
     console.log(data)
-    setResult(data)
-    // if (data.result === 0) {
-    //   setResult("Fake News");
-    // } else {
-    //   setResult("Real News")
-    // }
+    if (data === 0) {
+      setResult("Fake News");
+    } else {
+      setResult("Real News")
+    }
   };
 
   return (
