@@ -1,17 +1,25 @@
 import sys
-import json
 import pickle
-from models import split_into_lemmas
-# need to import the split into lemmas function 
+from textblob import TextBlob
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.svm import SVC
+from sklearn.pipeline import Pipeline
 
+def split_into_lemmas(content):
+    # Convert to lowercase
+    content = content.lower()
+    # Tokenize and lemmatize
+    words = TextBlob(content).words
+    return ' '.join([word.lemmatize() for word in words])
+
+# Load the model
 with open('model.pkl', 'rb') as f:
     model = pickle.load(f)
 
-def classify(input_value):
-    result = model.predict([input_value])[0]
-    return result[0]
+# Assuming the input is passed as the first argument
+input_value = sys.argv[1]
+input_lemmas = split_into_lemmas(input_value)
 
-if __name__ == '__main__':
-    input_value = sys.argv[1]
-    result = classify(input_value)
-    print(json.dumps({"result": result}))
+# Predict using the model
+result = model.predict([input_lemmas])[0]
+print(result)
