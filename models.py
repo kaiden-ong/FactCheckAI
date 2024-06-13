@@ -53,7 +53,7 @@ def predict(input):
     pipeline_svm = Pipeline([
         ('bow', CountVectorizer(analyzer=split_into_lemmas)),
         ('tfidf', TfidfTransformer()),
-        ('classifier', SVC()),  # <== change here
+        ('classifier', SVC(probability=True)),  # <== change here
     ])
 
     # pipeline parameters to automatically explore and tune
