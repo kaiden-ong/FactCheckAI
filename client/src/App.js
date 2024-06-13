@@ -1,15 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 function App() {
   const [input, setInput] = useState('');
   const [result, setResult] = useState('');
-
-  const textareaRef = useRef(null); // Create a ref for the textarea
+  const [isPulsing, setIsPulsing] = useState(false);
+  const textareaRef = useRef(null);
 
   const handleTextareaChange = (e) => {
     setInput(e.target.value);
-    autoResizeTextarea(); // Call auto resizing function on textarea change
+    autoResizeTextarea();
   };
 
   const handleSubmit = async () => {
@@ -21,22 +21,31 @@ function App() {
       body: JSON.stringify({input}),
     });
     const data = await response.json();
-    console.log(data)
+    console.log(data);
     // const data = 0;
     if (data === 0) {
       setResult("Fake News");
     } else {
-      setResult("Real News")
+      setResult("Real News");
     }
+    setIsPulsing(true);
   };
 
   const autoResizeTextarea = () => {
     const textarea = textareaRef.current;
     if (textarea) {
-      textarea.style.height = ""; // Reset the height
-      textarea.style.height = Math.min(textarea.scrollHeight-16, 100) + "px"; // Set the height
+      textarea.style.height = "";
+      textarea.style.height = Math.min(textarea.scrollHeight-16, 100) + "px";
     }
   };
+
+  useEffect(() => {
+    if (isPulsing) {
+      setTimeout(() => {
+        setIsPulsing(false);
+      }, 1000);
+    }
+  }, [isPulsing]);
 
   return (
     <div className="App">
@@ -45,13 +54,20 @@ function App() {
         <p>Enter the URL of a news article to see if it's real or fake! <br/>(Right now copy paste the whole news article)</p>
         <textarea 
           id="news_url" 
-          ref={textareaRef} // Attach the ref to the textarea
+          ref={textareaRef}
           value={input}
           onChange={handleTextareaChange}
           rows={1}
         />
-        <button id="submit_btn" onClick={handleSubmit}>Is It Real?</button>
-        <p id="real_fake">{result}</p>
+        <button id="submit_btn" class="submit-btn-pushable" role="button" onClick={handleSubmit}>
+          <span class="submit-btn-shadow"></span>
+          <span class="submit-btn-edge"></span>
+          <span class="submit-btn-front text">
+            Is It Real?
+          </span>
+        </button>
+        {/* <button id="submit_btn" onClick={handleSubmit}>Is It Real?</button> */}
+        <p id="real_fake" className={`${isPulsing ? 'pulse' : ''}`}>{result}</p>
         </div>
     </div>
   );
