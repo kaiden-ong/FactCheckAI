@@ -6,7 +6,7 @@ function App() {
   const [result, setResult] = useState('');
 
   const handleSubmit = async () => {
-    const response = await fetch('http://localhost:4000/classify', {
+    const response = await fetch('http://localhost:4000/api/predict/classify', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
