@@ -13,23 +13,47 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    const response = await fetch('http://localhost:4000/api/predict/classify', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({input}),
-    });
-    const data = await response.json();
-    console.log(data);
-    // const data = 0;
-    if (data === 0) {
-      setResult("Fake News");
+    if (input.length < 15) {
+      setResult("Choose longer text segment");
+      return;
+    }
+    let articleText = parseHTML({input});
+    if (articleText === "INVALID URL") {
+      setResult(articleText);
     } else {
-      setResult("Real News");
+      const response = await fetch('http://localhost:4000/api/predict/classify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({input}), 
+        // body: JSON.stringify(articleText) use this after parseHTML has been implemented
+      });
+      const data = await response.json();
+      console.log(data);
+      // const data = 0;
+      if (data === 0) {
+        setResult("Fake News");
+      } else {
+        setResult("Real News");
+      }
     }
     setIsPulsing(true);
   };
+
+  function parseHTML(URL) {
+    // TODO: Tony use beautiful soup to parse the news article text and return it.
+    if (validURL(URL)) {
+      return URL;
+    } else {
+      return "INVALID URL";
+    }
+  }
+
+  function validURL(URL) {
+    // TODO: Tony determine if URL is valid if yes return true, else return false;
+    return true;
+  }
 
   const autoResizeTextarea = () => {
     const textarea = textareaRef.current;
@@ -59,7 +83,8 @@ function App() {
           onChange={handleTextareaChange}
           rows={1}
         />
-        <button id="submit_btn" class="submit-btn-pushable" role="button" onClick={handleSubmit}>
+        {/* Button #82 from: https://getcssscan.com/css-buttons-examples */}
+        <button id="submit_btn" class="submit-btn-pushable" onClick={handleSubmit}>
           <span class="submit-btn-shadow"></span>
           <span class="submit-btn-edge"></span>
           <span class="submit-btn-front text">

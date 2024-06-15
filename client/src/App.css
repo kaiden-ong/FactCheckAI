@@ -12,7 +12,6 @@
   background-color: white;
   padding: 1rem 10rem;
   margin: 0 auto;
-  border: 2px solid black; 
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -58,7 +57,7 @@ button#submit_btn:hover {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  margin-top: 1em;
+  margin-top: 1.5em;
 }
 
 .submit-btn-shadow {
