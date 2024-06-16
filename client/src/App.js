@@ -1,10 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import './App.css';
+import Results from './Results';
 
 function App() {
   const [input, setInput] = useState('');
   const [result, setResult] = useState('');
-  const [isPulsing, setIsPulsing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showCheck, setShowCheck] = useState(false);
+  const [showResult, setShowResult] = useState(false);
   const textareaRef = useRef(null);
 
   const handleTextareaChange = (e) => {
@@ -17,7 +20,9 @@ function App() {
       setResult("Choose longer text segment");
       return;
     }
+
     let articleText = parseHTML({input});
+    setIsLoading(true);
     if (articleText === "INVALID URL") {
       setResult(articleText);
     } else {
@@ -38,8 +43,16 @@ function App() {
         setResult("Real News");
       }
     }
-    setIsPulsing(true);
+    setShowCheck(true);
+    await delay(2000);
+    setShowResult(true);
   };
+
+  function delay(milliseconds){
+    return new Promise(resolve => {
+        setTimeout(resolve, milliseconds);
+    });
+  }
 
   function parseHTML(URL) {
     // TODO: Tony use beautiful soup to parse the news article text and return it.
@@ -63,36 +76,61 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    if (isPulsing) {
-      setTimeout(() => {
-        setIsPulsing(false);
-      }, 1000);
-    }
-  }, [isPulsing]);
+  function reset() {
+    setInput('');
+    setResult('');
+    setIsLoading(false);
+    setShowCheck(false);
+    setShowResult(false);
+  }
+
+
 
   return (
     <div className="App">
       <div className='container'>
         <h1>FactCheck<span style={{color: 'red'}}>AI</span></h1>
-        <p>Enter the URL of a news article to see if it's real or fake! <br/>(Right now copy paste the whole news article)</p>
-        <textarea 
-          id="news_url" 
-          ref={textareaRef}
-          value={input}
-          onChange={handleTextareaChange}
-          rows={1}
-        />
-        {/* Button #82 from: https://getcssscan.com/css-buttons-examples */}
-        <button id="submit_btn" class="submit-btn-pushable" onClick={handleSubmit}>
-          <span class="submit-btn-shadow"></span>
-          <span class="submit-btn-edge"></span>
-          <span class="submit-btn-front text">
-            Is It Real?
-          </span>
-        </button>
-        {/* <button id="submit_btn" onClick={handleSubmit}>Is It Real?</button> */}
-        <p id="real_fake" className={`${isPulsing ? 'pulse' : ''}`}>{result}</p>
+        { !showResult ? (
+          <div>
+            { isLoading ? (
+              <div id="loading">
+                { !showCheck && (
+                  <div className="loadingSpinner">
+                    <div className="spinner"></div>
+                    <h3 id="loadingText">Analyzing Article...</h3>
+                  </div>
+                )}
+                { showCheck && (
+                  <div className="checkmark">
+                    <img src="/../assets/checkmark.png" alt="Checkmark"/>
+                    <h3>The Results Are In!!!</h3>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="home-content">
+                <p>Enter the URL of a news article to see if it's real or fake! <br/>(Right now copy paste the whole news article)</p>
+                <textarea 
+                  id="news_url" 
+                  ref={textareaRef}
+                  value={input}
+                  onChange={handleTextareaChange}
+                  rows={1}
+                />
+                {/* Button #82 from: https://getcssscan.com/css-buttons-examples */}
+                <button id="submit_btn" className="submit-btn-pushable" onClick={handleSubmit}>
+                  <span className="submit-btn-shadow"></span>
+                  <span className="submit-btn-edge"></span>
+                  <span className="submit-btn-front text">
+                    Is It Real?
+                  </span>
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <Results result={result} reset={reset} />
+        )}
         </div>
     </div>
   );
