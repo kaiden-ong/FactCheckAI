@@ -1,3 +1,4 @@
+# Ignore this file, I think was for testing purposes
 import matplotlib.pyplot as plt
 import csv
 import sklearn

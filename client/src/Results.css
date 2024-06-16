@@ -101,27 +101,3 @@
 .try-another-btn-pushable:focus:not(:focus-visible) {
     outline: none;
 }
-
-p#real_fake {
-    margin-top: 20px;
-    font-size: 1.2em;
-    font-weight: bold;
-    transition: transform 0.3s ease; /* Transition for transform */
-    transform: scale(1); /* Initial scale */
-}
-  
-@keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
-    }
-}
-  
-.pulse {
-    animation: pulse 1s ease;
-}
