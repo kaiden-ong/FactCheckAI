@@ -23,6 +23,7 @@ df_real['truth'] = 1
 df = pd.concat([df_real, df_fake])
 df = df.drop('Unnamed: 0', axis=1)
 sample_size = int(len(df.index)/8)
+# print(sample_size)
 df_sample = df.sample(n=sample_size, random_state=42)
 X = df_sample['text']
 y = df_sample['truth']

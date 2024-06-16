@@ -4,7 +4,8 @@ import Results from './Results';
 
 function App() {
   const [input, setInput] = useState('');
-  const [result, setResult] = useState('');
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
   const [showResult, setShowResult] = useState(false);
@@ -17,30 +18,28 @@ function App() {
 
   const handleSubmit = async () => {
     if (input.length < 15) {
-      setResult("Choose longer text segment");
+      setError("Choose longer text segment");
       return;
     }
 
     let articleText = parseHTML({input});
     setIsLoading(true);
     if (articleText === "INVALID URL") {
-      setResult(articleText);
+      setError(articleText);
     } else {
-      const response = await fetch('http://localhost:4000/api/predict/classify', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({input}), 
-        // body: JSON.stringify(articleText) use this after parseHTML has been implemented
-      });
+      const response = await fetch(`http://localhost:4000/api/predict/classify?input=${input}`)
       const data = await response.json();
+      const result = data.prediction;
+      const probability = data.probabilities;
+      const time = data.latency;
+      
       console.log(data);
       // const data = 0;
-      if (data === 0) {
-        setResult("Fake News");
+      if (result === 0) {
+        setResult({ "Result": "Fake News", "Probability": probability, "Time": time });
       } else {
-        setResult("Real News");
+        setResult({ "Result": "Real News", "Probability": 1-probability, "Time": time });
+
       }
     }
     setShowCheck(true);
@@ -78,7 +77,8 @@ function App() {
 
   function reset() {
     setInput('');
-    setResult('');
+    setResult(null);
+    setError('');
     setIsLoading(false);
     setShowCheck(false);
     setShowResult(false);
@@ -125,6 +125,7 @@ function App() {
                     Is It Real?
                   </span>
                 </button>
+                <h3>{error}</h3>
               </div>
             )}
           </div>

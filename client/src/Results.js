@@ -8,9 +8,18 @@ function Results({ result, reset }) {
         jsConfetti.addConfetti()
     }
 
+    const prediction = result.Result;
+    const prob = result.Probability*100;
+    const time = result.Time;
+
     return (
         <div>
-            <h2>We're pretty sure that's <span style={{ textDecoration: 'underline' }}>{result}</span>!</h2>
+            <h2>We're pretty sure that's <span style={{ textDecoration: 'underline' }}>{prediction}</span>!</h2>
+            <div>
+                <h3>Here's some cool statistics</h3>
+                <p>Probability:  {prob}%</p>
+                <p>Time Elapsed: {time} seconds</p>
+            </div>
             <button id="submit_btn" className="try-another-btn-pushable" onClick={reset}>
                 <span className="try-another-btn-shadow"></span>
                 <span className="try-another-btn-edge"></span>
