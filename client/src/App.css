@@ -192,3 +192,15 @@ button#submit_btn:hover {
   align-items: center;
   margin-top: 1rem;
 }
+
+.error-banner {
+  position: absolute;
+  top: 1rem;
+  background-color: #ffcccc;
+  color: #990000;
+  padding: 10px;
+  border: 1px solid #990000;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+}
