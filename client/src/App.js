@@ -18,7 +18,9 @@ function App() {
 
   const handleSubmit = async () => {
     if (input.length < 15) {
-      setError("Choose longer text segment");
+      setError("Choose a longer text segment");
+      // setError("Enter a valid URL"); use this once validURL function is complete
+      setTimeout(() => setError(''), 3000);
       return;
     }
 
@@ -39,7 +41,6 @@ function App() {
         setResult({ "Result": "Fake News", "Probability": probability, "Time": time });
       } else {
         setResult({ "Result": "Real News", "Probability": 1-probability, "Time": time });
-
       }
     }
     setShowCheck(true);
@@ -96,6 +97,11 @@ function App() {
     <div className="App">
       <div className='container'>
         <h1>FactCheck<span style={{color: 'red'}}>AI</span></h1>
+        {error && (
+          <div className="error-banner">
+            {error}
+          </div>
+        )}
         { !showResult ? (
           <div>
             { isLoading ? (
@@ -131,7 +137,6 @@ function App() {
                     Is It Real?
                   </span>
                 </button>
-                <h3>{error}</h3>
               </div>
             )}
           </div>
