@@ -19,22 +19,26 @@ function App() {
   const handleSubmit = async () => {
     if (input.length < 15) {
       setError("Choose a longer text segment");
-      // setError("Enter a valid URL"); use this once validURL function is complete
+      setError("Enter a valid URL"); 
+      // use this once validURL function is complete
       setTimeout(() => setError(''), 3000);
       return;
     }
 
-    let articleText = parseHTML({input});
+    let articleText = await parseHTML({input});
     setIsLoading(true);
     if (articleText === "INVALID URL") {
       setError(articleText);
+      setIsLoading(false); // stops loading 
+      setTimeout(() => setError(''), 3000);
+      
     } else {
       const response = await fetch(`http://localhost:4000/api/predict/classify?input=${input}`)
       const data = await response.json();
       const result = data.prediction;
       const probability = data.probabilities;
       const time = data.latency;
-      
+
       console.log(data);
       // const data = 0;
       if (result === 0) {
@@ -63,15 +67,16 @@ function App() {
     }
   }
 
+  // checks if url is proper format then checks if url exists
   function validURL(URL) {
-    const pattern = new RegExp('^(https?:\\/\\/)?' + 
+    var pattern = new RegExp('^(https?:\\/\\/)?' + 
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + 
       '((\\d{1,3}\\.){3}\\d{1,3}))' + 
       '(\\:\\d+)?' + 
       '(\\/[-a-z\\d%_.~+]*)*' + 
       '(\\?[;&a-z\\d%_.~+=-]*)?' + 
       '(\\#[-a-z\\d_]*)?$', 'i'); 
-    return !!pattern.test(URL);
+    return pattern.test(URL);
   }
 
   const autoResizeTextarea = () => {
@@ -90,8 +95,6 @@ function App() {
     setShowCheck(false);
     setShowResult(false);
   }
-
-
 
   return (
     <div className="App">
