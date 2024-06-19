@@ -16,6 +16,7 @@ function App() {
     autoResizeTextarea();
   };
 
+  // TODO: Make pressing enter same as handleSubmit
   const handleSubmit = async () => {
     let URL = await parseHTML(input);
     if (URL === "INVALID URL") {
