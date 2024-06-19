@@ -17,22 +17,14 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    if (input.length < 15) {
-      setError("Choose a longer text segment");
-      setError("Enter a valid URL"); 
-      // use this once validURL function is complete
-      setTimeout(() => setError(''), 3000);
-      return;
-    }
-
-    let articleText = await parseHTML({input});
-    setIsLoading(true);
+    let articleText = await parseHTML(input);
+    console.log(articleText)
     if (articleText === "INVALID URL") {
       setError(articleText);
       setIsLoading(false); // stops loading 
       setTimeout(() => setError(''), 3000);
-      
     } else {
+      setIsLoading(true);
       const response = await fetch(`http://localhost:4000/api/predict/classify?input=${input}`)
       const data = await response.json();
       const result = data.prediction;
@@ -46,10 +38,10 @@ function App() {
       } else {
         setResult({ "Result": "Real News", "Probability": 1-probability, "Time": time });
       }
+      setShowCheck(true);
+      await delay(2000);
+      setShowResult(true);
     }
-    setShowCheck(true);
-    await delay(2000);
-    setShowResult(true);
   };
 
   function delay(milliseconds){
@@ -65,18 +57,22 @@ function App() {
     } else {
       return "INVALID URL";
     }
+    
   }
 
   // checks if url is proper format then checks if url exists
   function validURL(URL) {
-    var pattern = new RegExp('^(https?:\\/\\/)?' + 
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + 
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + 
-      '(\\:\\d+)?' + 
-      '(\\/[-a-z\\d%_.~+]*)*' + 
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + 
-      '(\\#[-a-z\\d_]*)?$', 'i'); 
-    return pattern.test(URL);
+    // var pattern = new RegExp('https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*');
+  
+    // return pattern.test(URL);
+    const expression = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi;
+    const regex = new RegExp(expression);
+    if (URL.match(regex)) {
+      return true;
+    } else {
+      return false;
+    }
+
   }
 
   const autoResizeTextarea = () => {
