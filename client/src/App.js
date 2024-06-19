@@ -17,15 +17,13 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    let articleText = await parseHTML(input);
-    console.log(articleText)
-    if (articleText === "INVALID URL") {
-      setError(articleText);
-      setIsLoading(false); // stops loading 
+    let URL = await parseHTML(input);
+    if (URL === "INVALID URL") {
+      setError(URL);
       setTimeout(() => setError(''), 3000);
     } else {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:4000/api/predict/classify?input=${input}`)
+      const response = await fetch(`http://localhost:4000/api/predict/classify?input=${URL}`)
       const data = await response.json();
       const result = data.prediction;
       const probability = data.probabilities;
@@ -50,14 +48,26 @@ function App() {
     });
   }
 
-  function parseHTML(URL) {
+  async function parseHTML(URL) {
     // TODO: Tony use beautiful soup to parse the news article text and return it.
-    if (validURL(URL)) {
-      return URL;
-    } else {
-      return "INVALID URL";
+    // Let's try cheerio: https://www.npmjs.com/package/cheerio
+    try {
+      if (validURL(URL)) {
+        const response = await fetch("http://localhost:4000/api/parser", {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({URL: URL})  
+        });
+        const data = await response.json();
+        return data.isURL;
+      } else {
+        return "INVALID URL";
+      }
+    } catch (error) {
+      console.error('Error posting data:', error);
     }
-    
   }
 
   // checks if url is proper format then checks if url exists
@@ -72,7 +82,6 @@ function App() {
     } else {
       return false;
     }
-
   }
 
   const autoResizeTextarea = () => {
