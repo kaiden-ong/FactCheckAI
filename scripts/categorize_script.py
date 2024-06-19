@@ -17,7 +17,7 @@ def split_into_lemmas(content):
     return ' '.join([word.lemmatize() for word in words])
 
 # Load the model
-with open('eight_svm.pkl', 'rb') as f:
+with open('models/eight_svm.pkl', 'rb') as f:
     model = pickle.load(f)
 
 # Assuming the input is passed as the first argument

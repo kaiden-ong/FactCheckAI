@@ -8,7 +8,7 @@ router.use(bodyParser.json());
 router.get('/classify', (req, res) => {
     const input = req.query.input;
     // Call the Python script with the input
-    const python = spawn('python', ['categorize_script.py', input]);
+    const python = spawn('python', ['scripts/categorize_script.py', input]);
     let dataToSend = '';
     python.stdout.on('data', (data) => {
         dataToSend += data.toString();
