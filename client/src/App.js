@@ -49,6 +49,20 @@ function App() {
     });
   }
 
+  // checks if url is proper format then checks if url exists
+  function validURL(URL) {
+    // var pattern = new RegExp('https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*');
+  
+    // return pattern.test(URL);
+    const expression = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi;
+    const regex = new RegExp(expression);
+    if (URL.match(regex)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   async function parseHTML(URL) {
     // TODO: Tony use beautiful soup to parse the news article text and return it.
     // Let's try cheerio: https://www.npmjs.com/package/cheerio
@@ -68,20 +82,6 @@ function App() {
       }
     } catch (error) {
       console.error('Error posting data:', error);
-    }
-  }
-
-  // checks if url is proper format then checks if url exists
-  function validURL(URL) {
-    // var pattern = new RegExp('https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*');
-  
-    // return pattern.test(URL);
-    const expression = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi;
-    const regex = new RegExp(expression);
-    if (URL.match(regex)) {
-      return true;
-    } else {
-      return false;
     }
   }
 
