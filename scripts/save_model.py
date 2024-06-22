@@ -22,7 +22,7 @@ df_fake['truth'] = 0
 df_real['truth'] = 1
 df = pd.concat([df_real, df_fake])
 df = df.drop('Unnamed: 0', axis=1)
-sample_size = int(len(df.index)/8)
+sample_size = int(len(df.index)/2)
 # print(sample_size)
 df_sample = df.sample(n=sample_size, random_state=42)
 X = df_sample['text']
@@ -69,5 +69,8 @@ print("done training")
 # keep each dump, just comment out when done:
 
 # with open('models/eight_svm.pkl', 'wb') as f:
+#     pickle.dump(svm_detector, f)
+
+# with open('models/half_svm.pkl', 'wb') as f:
 #     pickle.dump(svm_detector, f)
 
