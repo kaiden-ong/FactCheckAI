@@ -25,8 +25,8 @@ df = df.drop('Unnamed: 0', axis=1)
 sample_size = int(len(df.index)/2)
 # print(sample_size)
 df_sample = df.sample(n=sample_size, random_state=42)
-X = df_sample['text']
-y = df_sample['truth']
+X = df['text']
+y = df['truth']
 print("df created")
 
 def split_into_lemmas(content):
@@ -58,7 +58,7 @@ grid_svm = GridSearchCV(
     pipeline_svm,  # pipeline from above
     param_grid=param_svm,  # parameters to tune via cross validation
     refit=True,  # fit using all data, on the best detected classifier
-    n_jobs=-1,  # number of cores to use for parallelization; -1 for "all cores"
+    n_jobs=3,  # number of cores to use for parallelization; -1 for "all cores"
     scoring='accuracy',  # what score are we optimizing?
     cv=StratifiedKFold(n_splits=5),  # what type of cross validation to use
 )
@@ -73,4 +73,7 @@ print("done training")
 
 # with open('models/half_svm.pkl', 'wb') as f:
 #     pickle.dump(svm_detector, f)
+
+with open('models/full_svm.pkl', 'wb') as f:
+    pickle.dump(svm_detector, f)
 
