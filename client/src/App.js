@@ -18,13 +18,13 @@ function App() {
 
   // TODO: Make pressing enter same as handleSubmit
   const handleSubmit = async () => {
-    let URL = await parseHTML(input);
-    if (URL === "INVALID URL") {
-      setError(URL);
+    let articleText = await parseHTML(input);
+    if (articleText === "INVALID URL") {
+      setError(articleText);
       setTimeout(() => setError(''), 3000);
     } else {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:4000/api/predict/classify?input=${URL}`)
+      const response = await fetch(`http://localhost:4000/api/predict/classify?input=${articleText}`)
       const data = await response.json();
       const result = data.prediction;
       const probability = data.probabilities;
@@ -66,6 +66,7 @@ function App() {
   async function parseHTML(URL) {
     // TODO: Tony use beautiful soup to parse the news article text and return it.
     // Let's try cheerio: https://www.npmjs.com/package/cheerio
+    return URL;
     try {
       if (validURL(URL)) {
         const response = await fetch("http://localhost:4000/api/parser", {
