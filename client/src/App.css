@@ -206,21 +206,27 @@ button#submit_btn:hover {
 }
 
 .model-options {
+  position: relative;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  background-color: #8AE6FD;
+  border-radius: 30px;
+  gap: 10px;
 }
 
 .model-button {
-  padding: 7px 12px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  background-color: #f8f8f8;
+  border: none;
+  padding: 10px 20px;
+  background-color: #8AE6FD;
   cursor: pointer;
-  border-radius: 15px;
+  transition: background-color 0.3s ease;
+  border-radius: 30px;
+}
+
+.model-button:hover {
+  background-color: #5eccff;
 }
 
 .model-button.selected {
-  border-color: #007bff;
-  background-color: #007bff;
-  color: white;
+  background-color: #04ACFA;
 }
