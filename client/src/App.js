@@ -10,6 +10,7 @@ function App() {
   const [showCheck, setShowCheck] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const textareaRef = useRef(null);
+  const [model, setModel] = useState('svm');
 
   const handleTextareaChange = (e) => {
     setInput(e.target.value);
@@ -24,8 +25,11 @@ function App() {
       setTimeout(() => setError(''), 3000);
     } else {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:4000/api/predict/classify?input=${articleText}`)
+      const response = await fetch(`http://localhost:4000/api/predict/classify?input=${articleText}&model=${model}`);
       const data = await response.json();
+      if (data.status === 500) {
+        console.log("error")
+      }
       const result = data.prediction;
       const probability = data.probabilities;
       const time = data.latency;
@@ -132,6 +136,26 @@ function App() {
             ) : (
               <div className="home-content">
                 <p>Enter the URL of a news article to see if it's real or fake! <br/>(Right now copy paste the whole news article)</p>
+                <div className="model-options">
+                  <button
+                    className={`model-button ${model === 'svm' ? 'selected' : ''}`}
+                    onClick={() => setModel('svm')}
+                  >
+                    SVM
+                  </button>
+                  <button
+                    className={`model-button ${model === 'nb' ? 'selected' : ''}`}
+                    onClick={() => setModel('nb')}
+                  >
+                    Naive Bayes
+                  </button>
+                  {/* <button
+                    className={`model-button ${model === 'dt' ? 'selected' : ''}`}
+                    onClick={() => handleSelectChange('dt')}
+                  >
+                    Decision Trees
+                  </button> */}
+                </div>
                 <textarea 
                   id="news_url" 
                   ref={textareaRef}

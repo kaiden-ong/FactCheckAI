@@ -45,27 +45,28 @@ X_count = count_vectorizer.fit_transform(X)
 # Create a TfidfTransformer
 tfidf_transformer = TfidfTransformer()
 X_tfidf = tfidf_transformer.fit_transform(X_count)
-
-content_tfidf = tfidf_transformer.fit_transform(X_tfidf)
-print (content_tfidf.shape)
-
-X_train, X_test, y_train, y_test = train_test_split(content_tfidf, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X_tfidf, y, test_size=0.2, random_state=42)
 naive_bayes = MultinomialNB().fit(X_train, y_train)
 print("done training")
 
-with open('models/full_nb.pkl', 'wb') as f:
-    pickle.dump(naive_bayes, f)
-print("saved to pickle")
+with open('models/count_vectorizer.pkl', 'wb') as f:
+    pickle.dump(count_vectorizer, f)
+with open('models/tfidf_transformer.pkl', 'wb') as f:
+    pickle.dump(tfidf_transformer, f)
 
-train_predictions = naive_bayes.predict(X_train)
+# with open('models/full_nb.pkl', 'wb') as f:
+#     pickle.dump(naive_bayes, f)
+# print("saved to pickle")
 
-print (train_predictions)
-print ('accuracy', accuracy_score(y_train, train_predictions))
-print ('confusion matrix\n', confusion_matrix(y_train, train_predictions))
-print ('(row=expected, col=predicted)')
+# train_predictions = naive_bayes.predict(X_train)
 
-plt.matshow(confusion_matrix(y_train, train_predictions), cmap=plt.cm.binary, interpolation='nearest')
-plt.title('confusion matrix')
-plt.colorbar()
-plt.ylabel('expected label')
-plt.xlabel('predicted label')
+# print (train_predictions)
+# print ('accuracy', accuracy_score(y_train, train_predictions))
+# print ('confusion matrix\n', confusion_matrix(y_train, train_predictions))
+# print ('(row=expected, col=predicted)')
+
+# plt.matshow(confusion_matrix(y_train, train_predictions), cmap=plt.cm.binary, interpolation='nearest')
+# plt.title('confusion matrix')
+# plt.colorbar()
+# plt.ylabel('expected label')
+# plt.xlabel('predicted label')

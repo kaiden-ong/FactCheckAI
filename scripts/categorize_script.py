@@ -16,25 +16,33 @@ def split_into_lemmas(content):
     words = TextBlob(content).words
     return ' '.join([word.lemmatize() for word in words])
 
+# Get params
+input_value = sys.argv[1]
+model_input = sys.argv[2]
+input_value = split_into_lemmas(input_value)
+# Set model
+if model_input == "svm":
+    modelFile = "models/full_svm.pkl"
+    input_value = [input_value]
+elif model_input == "nb":
+    modelFile = "models/full_nb.pkl"
+    with open("models/count_vectorizer.pkl", 'rb') as f:
+        count_vectorizer = pickle.load(f)
+    with open("models/tfidf_transformer.pkl", 'rb') as f:
+        tfidf_transformer = pickle.load(f)
+    input_count = count_vectorizer.transform([input_value])
+    input_tfidf = tfidf_transformer.transform(input_count)
+    input_value = input_tfidf
+elif model_input == "dt":
+    modelFile = "models/full_dt.pkl"
+
 # Load the model
-with open('models/full_svm.pkl', 'rb') as f:
+with open(modelFile, 'rb') as f:
     model = pickle.load(f)
 
-# Assuming the input is passed as the first argument
-input_value = sys.argv[1]
-# input_value = "Based on the number of supporters Trump is drawing at his Florida rallies, it might be a good time for Rubio to jump on the Trump Train Marco Rubio won the Republican nomination for a second Senate term Tuesday night, a reversal of fortune after Florida GOP voters dealt a fatal blow to his presidential ambitions in a primary earlier this year.With the Senate on the line, Republicans convinced the Florida lawmaker to seek re-election rather than retiring after only a single term. Rubio had planned to either be in the White House or the private sector next year. Winning his primary is the first step in extending his stay on Capitol Hill instead.The primary field mostly cleared for Rubio when he decided to give it another go. The sole holdout among name candidates was builder Carlos Beruff. Rubio mostly ignored his primary opponent, refusing to debate him. Via: Washington ExaminerMeanwhile, Rubio says he ll  consider  campaigning with Trump:Sen. Marco Rubio says he's open to campaigning alongside Donald Trump, @mkraju reports https://t.co/JKoUjl9QdP https://t.co/eU5xyYHN39  CNN Politics (@CNNPolitics) August 30, 2016"
-input_lemmas = split_into_lemmas(input_value)
-
 # Predict using the model
-# result = model.predict([input_lemmas])[0]
-# print(result)
-
-# for testing:
-
-
-# Predict using the model
-result = model.predict([input_lemmas])[0]
-probabilities = model.predict_proba([input_lemmas])[0]
+result = model.predict(input_value)[0]
+probabilities = model.predict_proba(input_value)[0]
 
 end_time = time.time()
 latency = end_time - start_time
