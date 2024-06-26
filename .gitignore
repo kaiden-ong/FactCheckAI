@@ -1,3 +1,7 @@
 data/*
+<<<<<<< HEAD
 node_modules/
 models/full_random_forest.pkl
+=======
+node_modules/
+>>>>>>> fd60cec4d589fa988d236931a1a553eb711efa50

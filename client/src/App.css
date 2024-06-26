@@ -212,15 +212,25 @@ button#submit_btn:hover {
   background-color: #8AE6FD;
   border-radius: 30px;
   gap: 10px;
+<<<<<<< HEAD
   padding: 5px;
+=======
+>>>>>>> fd60cec4d589fa988d236931a1a553eb711efa50
 }
 
 .model-button {
   border: none;
+<<<<<<< HEAD
   padding: 8px 20px;
   background-color: #8AE6FD;
   cursor: pointer;
   transition: background-color 0.5s ease;
+=======
+  padding: 10px 20px;
+  background-color: #8AE6FD;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+>>>>>>> fd60cec4d589fa988d236931a1a553eb711efa50
   border-radius: 30px;
 }
 

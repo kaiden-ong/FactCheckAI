@@ -7,6 +7,12 @@ from textblob import TextBlob
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, TfidfVectorizer
 from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 from sklearn.naive_bayes import MultinomialNB
+<<<<<<< HEAD
+=======
+from sklearn.pipeline import Pipeline
+from sklearn.svm import SVC
+from sklearn.model_selection import GridSearchCV
+>>>>>>> fd60cec4d589fa988d236931a1a553eb711efa50
 from sklearn.metrics import classification_report, f1_score, accuracy_score, confusion_matrix
 import pickle
 
