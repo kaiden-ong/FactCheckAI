@@ -4,17 +4,22 @@ import JSConfetti from 'js-confetti'
 
 function Results({ result, reset }) {
     const jsConfetti = new JSConfetti()
-    if (result === "Real News") {
+    if (result.Result === "Real News") {
         jsConfetti.addConfetti()
     }
-
+    const model = result.Model === "svm" ? "Support Vector Classifier" : 
+                    result.Model === "nb" ? "Multinomial Naive Bayes Classifier" :
+                    result.Model === "rf" ? "Random Forest Classifier" :
+                    ""
     const prediction = result.Result;
-    const prob = result.Probability*100;
-    const time = result.Time;
+    let prob = result.Probability*100;
+    prob = Math.round(prob * 1000) / 1000;
+    let time = result.Time;
+    time = Math.round(time * 1000) / 1000;
 
     return (
         <div>
-            <h2>We're pretty sure that's <span style={{ textDecoration: 'underline' }}>{prediction}</span>!</h2>
+            <h2>Our {model} thinks that this article is <span style={{ textDecoration: 'underline' }}>{prediction}</span>!</h2>
             <div>
                 <h3>Here's some cool statistics</h3>
                 <p>Probability:  {prob}%</p>

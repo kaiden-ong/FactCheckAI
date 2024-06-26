@@ -1,1 +1,3 @@
 data/*
+node_modules/
+models/full_random_forest.pkl

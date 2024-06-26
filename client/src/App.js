@@ -10,42 +10,41 @@ function App() {
   const [showCheck, setShowCheck] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const textareaRef = useRef(null);
+  const [model, setModel] = useState('svm');
 
   const handleTextareaChange = (e) => {
     setInput(e.target.value);
     autoResizeTextarea();
   };
 
+  // TODO: Make pressing enter same as handleSubmit
   const handleSubmit = async () => {
-    if (input.length < 15) {
-      setError("Choose a longer text segment");
-      // setError("Enter a valid URL"); use this once validURL function is complete
-      setTimeout(() => setError(''), 3000);
-      return;
-    }
-
-    let articleText = parseHTML({input});
-    setIsLoading(true);
+    let articleText = await parseHTML(input);
     if (articleText === "INVALID URL") {
       setError(articleText);
+      setTimeout(() => setError(''), 3000);
     } else {
-      const response = await fetch(`http://localhost:4000/api/predict/classify?input=${input}`)
+      setIsLoading(true);
+      const response = await fetch(`http://localhost:4000/api/predict/classify?input=${articleText}&model=${model}`);
       const data = await response.json();
+      if (data.status === 500) {
+        console.log("error")
+      }
       const result = data.prediction;
       const probability = data.probabilities;
       const time = data.latency;
-      
+      const model_used = data.model
       console.log(data);
       // const data = 0;
       if (result === 0) {
-        setResult({ "Result": "Fake News", "Probability": probability, "Time": time });
+        setResult({ "Result": "Fake News", "Probability": probability, "Time": time, "Model": model_used });
       } else {
-        setResult({ "Result": "Real News", "Probability": 1-probability, "Time": time });
+        setResult({ "Result": "Real News", "Probability": 1-probability, "Time": time, "Model": model_used });
       }
+      setShowCheck(true);
+      await delay(2000);
+      setShowResult(true);
     }
-    setShowCheck(true);
-    await delay(2000);
-    setShowResult(true);
   };
 
   function delay(milliseconds){
@@ -54,24 +53,41 @@ function App() {
     });
   }
 
-  function parseHTML(URL) {
-    // TODO: Tony use beautiful soup to parse the news article text and return it.
-    if (validURL(URL)) {
-      return URL;
+  // checks if url is proper format then checks if url exists
+  function validURL(URL) {
+    // var pattern = new RegExp('https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*');
+  
+    // return pattern.test(URL);
+    const expression = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi;
+    const regex = new RegExp(expression);
+    if (URL.match(regex)) {
+      return true;
     } else {
-      return "INVALID URL";
+      return false;
     }
   }
 
-  function validURL(URL) {
-    const pattern = new RegExp('^(https?:\\/\\/)?' + 
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + 
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + 
-      '(\\:\\d+)?' + 
-      '(\\/[-a-z\\d%_.~+]*)*' + 
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + 
-      '(\\#[-a-z\\d_]*)?$', 'i'); 
-    return !!pattern.test(URL);
+  async function parseHTML(URL) {
+    // TODO: Tony use beautiful soup to parse the news article text and return it.
+    // Let's try cheerio: https://www.npmjs.com/package/cheerio
+    return URL;
+    try {
+      if (validURL(URL)) {
+        const response = await fetch("http://localhost:4000/api/parser", {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({URL: URL})  
+        });
+        const data = await response.json();
+        return data.isURL;
+      } else {
+        return "INVALID URL";
+      }
+    } catch (error) {
+      console.error('Error posting data:', error);
+    }
   }
 
   const autoResizeTextarea = () => {
@@ -90,8 +106,6 @@ function App() {
     setShowCheck(false);
     setShowResult(false);
   }
-
-
 
   return (
     <div className="App">
@@ -122,6 +136,26 @@ function App() {
             ) : (
               <div className="home-content">
                 <p>Enter the URL of a news article to see if it's real or fake! <br/>(Right now copy paste the whole news article)</p>
+                <div className="model-options">
+                  <button
+                    className={`model-button ${model === 'svm' ? 'selected' : ''}`}
+                    onClick={() => setModel('svm')}
+                  >
+                    SVM
+                  </button>
+                  <button
+                    className={`model-button ${model === 'nb' ? 'selected' : ''}`}
+                    onClick={() => setModel('nb')}
+                  >
+                    Naive Bayes
+                  </button>
+                  <button
+                    className={`model-button ${model === 'rf' ? 'selected' : ''}`}
+                    onClick={() => setModel('rf')}
+                  >
+                    Decision Trees
+                  </button>
+                </div>
                 <textarea 
                   id="news_url" 
                   ref={textareaRef}

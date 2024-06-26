@@ -204,3 +204,30 @@ button#submit_btn:hover {
   margin-bottom: 15px;
   text-align: center;
 }
+
+.model-options {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  background-color: #8AE6FD;
+  border-radius: 30px;
+  gap: 10px;
+  padding: 5px;
+}
+
+.model-button {
+  border: none;
+  padding: 8px 20px;
+  background-color: #8AE6FD;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+  border-radius: 30px;
+}
+
+.model-button:hover {
+  background-color: #5eccff;
+}
+
+.model-button.selected {
+  background-color: #04ACFA;
+}
