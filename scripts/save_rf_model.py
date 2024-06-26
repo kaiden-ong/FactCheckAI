@@ -45,7 +45,7 @@ tfidf_transformer = TfidfTransformer()
 X_tfidf = tfidf_transformer.fit_transform(X_count)
 X_train, X_test, y_train, y_test = train_test_split(X_tfidf, y, test_size=0.2, random_state=42)
 
-random_forest = RandomForestClassifier().fit(X_train, y_train)
+random_forest = RandomForestClassifier(max_depth=45, random_state=42).fit(X_train, y_train)
 
 with open('models/full_random_forest.pkl', 'wb') as f:
     pickle.dump(random_forest, f)

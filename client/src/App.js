@@ -153,7 +153,7 @@ function App() {
                     className={`model-button ${model === 'rf' ? 'selected' : ''}`}
                     onClick={() => setModel('rf')}
                   >
-                    Decision Trees
+                    Random Forest
                   </button>
                 </div>
                 <textarea 
