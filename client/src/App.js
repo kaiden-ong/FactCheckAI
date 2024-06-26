@@ -109,7 +109,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className='container'>
+      <div className={`${showResult === true ? 'result-container' : 'home-container'}`}>
         <h1>FactCheck<span style={{color: 'red'}}>AI</span></h1>
         {error && (
           <div className="error-banner">

@@ -19,7 +19,7 @@ function Results({ result, reset }) {
 
     return (
         <div>
-            <h2>Our {model} thinks that this article is <span style={{ textDecoration: 'underline' }}>{prediction}</span>!</h2>
+            <h2>Our {model} thinks this article is <span style={{ textDecoration: 'underline' }}>{prediction}</span>!</h2>
             <div>
                 <h3>Here's some cool statistics</h3>
                 <p>Probability:  {prob}%</p>
