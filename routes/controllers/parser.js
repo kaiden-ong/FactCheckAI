@@ -23,6 +23,30 @@ NEW YORK—As extreme heat continued to batter states across much of the Midwest
  headaches, like getting their AC unit fixed. \
 ";
 
+const generateFilename = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    const second = date.getSeconds();
+    return `${year}-${month}-${day}-${hour}-${minute}-${second}.json`;
+};
+
+const saveContentJson = (content) => {
+    const filename = generateFilename();
+    const jsonContent = JSON.stringify(content, null, 2);
+    const folder = process.env.NODE_ENV === "test" ? "test-data" : "data";
+
+    if (!fs.existsSync(folder)) {
+        fs.mkdirSync(folder);
+    }
+
+    fs.writeFileSync(path.join(folder, filename), jsonContent);
+    return filename;
+};
+
 router.post('/', async (req, res) => {
     const URL = req.body.URL;
     // const content = HERE DO THE PARSING, add other methods as needed
@@ -37,11 +61,23 @@ router.post('/', async (req, res) => {
             paragraphs.push($(element).text());
         });
 
-        res.json({ status: "success", isURL: test });
-        // res.json({ status: "success", isURL: content }); change to this one when done
+        const content = { title, paragraphs };
+        const filename = saveContentJson(content);
+
+        res.json({
+            status: "success",
+            message: "Content scraped successfully",
+            filename: filename
+        });
+        // Uncomment the following line to use actual content instead of test data
+        // res.json({ status: "success", isURL: content }); 
     } catch (error) {
         console.error('Error fetching or parsing data:', error.message);
-        res.status(500).json({ status: "error", message: "Error fetching or parsing data", error: error.message });
+        res.status(500).json({
+            status: "error",
+            message: "Error fetching or parsing data",
+            error: error.message
+        });
     }
 });
 
