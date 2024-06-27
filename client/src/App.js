@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './App.css';
 import Results from './Results';
+import checkmark from './assets/checkmark.png';
 
 function App() {
   const [input, setInput] = useState('');
@@ -25,7 +26,7 @@ function App() {
       setTimeout(() => setError(''), 3000);
     } else {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:4000/api/predict/classify?input=${articleText}&model=${model}`);
+      const response = await fetch(`/api/predict/classify?input=${articleText}&model=${model}`);
       const data = await response.json();
       if (data.status === 500) {
         console.log("error")
@@ -73,7 +74,7 @@ function App() {
     return URL;
     try {
       if (validURL(URL)) {
-        const response = await fetch("http://localhost:4000/api/parser", {
+        const response = await fetch("/api/parser", {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -128,7 +129,7 @@ function App() {
                 )}
                 { showCheck && (
                   <div className="checkmark">
-                    <img src="/../assets/checkmark.png" alt="Checkmark"/>
+                    <img src={checkmark} alt="Checkmark"/>
                     <h3>The Results Are In!!!</h3>
                   </div>
                 )}

@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: url('../public/assets/bg1-loop.gif');
+  background-image: url('./assets/bg1-loop.gif');
 }
 
 .home-container {

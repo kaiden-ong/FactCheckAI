@@ -1,3 +1,6 @@
 data/*
-node_modules/
-# models/full_random_forest.pkl
+*node_modules/
+/public/build
+*.vs/
+*.DS_Store
+__pycache__/*
