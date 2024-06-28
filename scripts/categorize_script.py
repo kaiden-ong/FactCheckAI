@@ -61,6 +61,7 @@ output = {
     'probabilities': probabilities[0],
     'latency': latency
 }
+# output = { "model": 'svm', "prediction": 0, "probabilities": 1, "latency": 1.112 }
 
 # Print the output as JSON
 print(json.dumps(output))

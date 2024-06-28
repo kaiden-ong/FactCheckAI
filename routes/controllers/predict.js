@@ -5,13 +5,14 @@ const { spawn } = require('node:child_process');
 router.get('/classify', (req, res) => {
     const input = req.query.input;
     const model = req.query.model;
-    
     // Call the Python script with the input
+    // res.json({ model: 'svm', prediction: 0, probabilities: 1, latency: 1.112 })
     const python = spawn('python', ['scripts/categorize_script.py', input, model]);
     let dataToSend = '';
     let responseSent = false;
     python.stdout.on('data', (data) => {
         dataToSend += data.toString();
+        console.log(dataToSend)
     });
 
     python.stderr.on('data', (data) => {
@@ -28,6 +29,7 @@ router.get('/classify', (req, res) => {
             if (code === 0) {
                 try {
                     const result = JSON.parse(dataToSend);
+                    console.log(result)
                     res.json(result);
                 } catch (error) {
                     res.status(500).send('Error parsing JSON response from Python script.');

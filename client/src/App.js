@@ -27,6 +27,7 @@ function App() {
     } else {
       setIsLoading(true);
       const response = await fetch(`/api/predict/classify?input=${articleText}&model=${model}`);
+      console.log(response);
       const data = await response.json();
       if (data.status === 500) {
         console.log("error")
