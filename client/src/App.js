@@ -55,42 +55,80 @@ function App() {
     });
   }
 
-  // checks if url is proper format then checks if url exists
-  function validURL(URL) {
-    // var pattern = new RegExp('https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*');
+//   // checks if url is proper format then checks if url exists
+//   function validURL(URL) {
+//     // var pattern = new RegExp('https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*');
   
-    // return pattern.test(URL);
-    const expression = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi;
-    const regex = new RegExp(expression);
-    if (URL.match(regex)) {
-      return true;
-    } else {
-      return false;
-    }
+//     // return pattern.test(URL);
+//     const expression = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi;
+//     const regex = new RegExp(expression);
+//     if (URL.match(regex)) {
+//       return true;
+//     } else {
+//       return false;
+//     }
+//   }
+
+//   async function parseHTML(URL) {
+//     // TODO: Tony use beautiful soup to parse the news article text and return it.
+//     // Let's try cheerio: https://www.npmjs.com/package/cheerio
+//     return URL;
+//     try {
+//       if (validURL(URL)) {
+//           const response = await fetch("/api/parser", {
+//               method: 'POST',
+//               headers: {
+//                   'Content-Type': 'application/json',
+//               },
+//               body: JSON.stringify({ URL: URL })
+//           });
+//           const data = await response.json();
+//           if (data.status === "success") {
+//               return data.isURL;
+//           } else {
+//               return `Error: ${data.message}`;
+//           }
+//       } else {
+//           return "INVALID URL";
+//       }
+//   } catch (error) {
+//       console.error('Error posting data:', error);
+//       return "Error posting data";
+//   }
+// }
+
+async function parseHTML(URL) {
+  // Function to validate URL
+  function validURL(URL) {
+      const expression = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi;
+      const regex = new RegExp(expression);
+      return regex.test(URL);
   }
 
-  async function parseHTML(URL) {
-    // TODO: Tony use beautiful soup to parse the news article text and return it.
-    // Let's try cheerio: https://www.npmjs.com/package/cheerio
-    return URL;
-    try {
+  try {
       if (validURL(URL)) {
-        const response = await fetch("/api/parser", {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({URL: URL})  
-        });
-        const data = await response.json();
-        return data.isURL;
+          const response = await fetch("/api/parser", {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ URL: URL })
+          });
+          const data = await response.json();
+          if (data.status === "success") {
+              return data.isURL;
+          } else {
+              return `Error: ${data.message}`;
+          }
       } else {
-        return "INVALID URL";
+          return "INVALID URL";
       }
-    } catch (error) {
+  } catch (error) {
       console.error('Error posting data:', error);
-    }
+      return "Error posting data";
   }
+}
+
 
   const autoResizeTextarea = () => {
     const textarea = textareaRef.current;
