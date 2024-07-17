@@ -4,6 +4,8 @@ import pandas as pd
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
 from torch.utils.data import DataLoader
+import time
+
 
 df_fake = pd.read_csv('data/DataSet_Misinfo_FAKE.csv')
 df_fake = df_fake.dropna()
@@ -64,3 +66,47 @@ class TextClassificationModel(nn.Module):
     def forward(self, text, offsets):
         embedded = self.embedding(text, offsets)
         return self.fc(embedded)
+
+num_class = len(set([label for (label, text) in train_iter]))
+vocab_size = len(vocab)
+emsize = 64
+model = TextClassificationModel(vocab_size, emsize, num_class).to(device)
+
+# def train(dataloader):
+#     model.train()
+#     total_acc, total_count = 0, 0
+#     log_interval = 500
+#     start_time = time.time()
+
+#     for idx, (label, text, offsets) in enumerate(dataloader):
+#         optimizer.zero_grad()
+#         predicted_label = model(text, offsets)
+#         loss = criterion(predicted_label, label)
+#         loss.backward()
+#         torch.nn.utils.clip_grad_norm_(model.parameters(), 0.1)
+#         optimizer.step()
+#         total_acc += (predicted_label.argmax(1) == label).sum().item()
+#         total_count += label.size(0)
+#         if idx % log_interval == 0 and idx > 0:
+#             elapsed = time.time() - start_time
+#             print(
+#                 "| epoch {:3d} | {:5d}/{:5d} batches "
+#                 "| accuracy {:8.3f}".format(
+#                     epoch, idx, len(dataloader), total_acc / total_count
+#                 )
+#             )
+#             total_acc, total_count = 0, 0
+#             start_time = time.time()
+
+
+# def evaluate(dataloader):
+#     model.eval()
+#     total_acc, total_count = 0, 0
+
+#     with torch.no_grad():
+#         for idx, (label, text, offsets) in enumerate(dataloader):
+#             predicted_label = model(text, offsets)
+#             loss = criterion(predicted_label, label)
+#             total_acc += (predicted_label.argmax(1) == label).sum().item()
+#             total_count += label.size(0)
+#     return total_acc / total_count
