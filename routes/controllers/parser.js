@@ -55,23 +55,27 @@ router.post('/', async (req, res) => {
     try {
         const response = await axios.get(URL);
         const $ = cheerio.load(response.data);
-
+        let articleText = "";
         const title = $("title").text();
-        const paragraphs = [];
+        articleText += title + " ";        
         $("p").each((index, element) => {
-            paragraphs.push($(element).text());
+            let text = $(element).text().replace(/\n/g, "").trim();
+            const keywordsToSkip = ["Advertisement", "Sponsored", "Click here"];
+            if (text.charAt(0) === "©" || text === "" || keywordsToSkip.some(keyword => text.includes(keyword))) {
+                return;
+            }
+            articleText += text + " ";
         });
+        // const content = { title, paragraphs };
+        // const filename = saveContentJson(content);
 
-        const content = { title, paragraphs };
-        const filename = saveContentJson(content);
-
-        res.json({
-            status: "success",
-            message: "Content scraped successfully",
-            filename: filename
-        });
+        // res.json({
+        //     status: "success",
+        //     message: "Content scraped successfully",
+        //     filename: filename
+        // });
         // Uncomment the following line to use actual content instead of test data
-        // res.json({ status: "success", isURL: content }); 
+        res.json({ status: "success", isURL: articleText }); 
     } catch (error) {
         console.error('Error fetching or parsing data:', error.message);
         res.status(500).json({
