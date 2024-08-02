@@ -26,8 +26,7 @@ function App() {
       setTimeout(() => setError(''), 3000);
     } else {
       setIsLoading(true);
-      const response = await fetch(`/api/predict/classify?input=${articleText}&model=${model}`);
-      console.log(response);
+      const response = await fetch(`/api/predict/classify?input=${articleText.substring(0,8000)}&model=${model}`);
       const data = await response.json();
       if (data.status === 500) {
         console.log("error")
@@ -194,6 +193,12 @@ async function parseHTML(URL) {
                     onClick={() => setModel('rf')}
                   >
                     Random Forest
+                  </button>
+                  <button
+                    className={`model-button ${model === 'nn' ? 'selected' : ''}`}
+                    onClick={() => setModel('nn')}
+                  >
+                    Neural Network
                   </button>
                 </div>
                 <textarea 

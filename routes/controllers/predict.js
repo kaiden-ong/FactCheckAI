@@ -29,7 +29,7 @@ router.get('/classify', (req, res) => {
             if (code === 0) {
                 try {
                     const result = JSON.parse(dataToSend);
-                    console.log(result)
+                    console.log("Result:", result);
                     res.json(result);
                 } catch (error) {
                     res.status(500).send('Error parsing JSON response from Python script.');
