@@ -7,12 +7,13 @@ router.get('/classify', (req, res) => {
     const model = req.query.model;
     // Call the Python script with the input
     // res.json({ model: 'svm', prediction: 0, probabilities: 1, latency: 1.112 })
-    const python = spawn('python', ['scripts/categorize_script.py', input, model]);
+    const python = spawn('python', ['scripts/categorize_script.py', input, model], {
+        env: { ...process.env, PYTHONIOENCODING: 'utf-8' }
+    });
     let dataToSend = '';
     let responseSent = false;
     python.stdout.on('data', (data) => {
         dataToSend += data.toString();
-        console.log(dataToSend)
     });
 
     python.stderr.on('data', (data) => {
@@ -24,12 +25,10 @@ router.get('/classify', (req, res) => {
     });
 
     python.on('close', (code) => {
-        console.log(`child process exited with code ${code}`);
         if (!responseSent) {
             if (code === 0) {
                 try {
                     const result = JSON.parse(dataToSend);
-                    console.log("Result:", result);
                     res.json(result);
                 } catch (error) {
                     res.status(500).send('Error parsing JSON response from Python script.');
