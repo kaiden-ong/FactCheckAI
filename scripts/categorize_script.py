@@ -34,10 +34,10 @@ input_value = [sys.argv[1]]
 model_input = sys.argv[2]
 if (model_input != "nn"):
     input_value = [split_into_lemmas(content) for content in input_value]
-with open("models/count_vectorizer.pkl", 'rb') as f:
+    with open("models/count_vectorizer.pkl", 'rb') as f:
         count_vectorizer = pickle.load(f)
-with open("models/tfidf_transformer.pkl", 'rb') as f:
-    tfidf_transformer = pickle.load(f)
+    with open("models/tfidf_transformer.pkl", 'rb') as f:
+        tfidf_transformer = pickle.load(f)
     
 # Set model
 if model_input == "svm":
@@ -47,13 +47,10 @@ elif model_input == "nb":
 elif model_input == "rf":
     modelFile = "models/full_random_forest.pkl"
 elif model_input == "nn":
-    modelFile = "models/nn.keras"
-    vocab = []
+    modelFile = "models/nn.keras"  
     with open('models/vocab.txt', 'r', encoding='utf-8') as f:
         vocab = [line.strip() for line in f]
-    vocab = list(filter(None, set(vocab)))
-    vectorize_layer = keras.layers.TextVectorization(max_tokens=20000, output_mode="int", output_sequence_length=500)
-    vectorize_layer.set_vocabulary(vocab)
+    vectorize_layer = keras.layers.TextVectorization(max_tokens=20000, output_mode="int", output_sequence_length=500, vocabulary=vocab)
 
 if model_input in ["nb", "rf"]:
     input_count = count_vectorizer.transform(input_value)
