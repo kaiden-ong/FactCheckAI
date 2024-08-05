@@ -1,6 +1,7 @@
 import os
 
 os.environ["KERAS_BACKEND"] = "tensorflow"
+os.environ["PYTHONIOENCODING"] = "utf-8"
 
 import keras
 import tensorflow as tf
@@ -89,5 +90,5 @@ test_label = df_test['real'].tolist()
 test_ds = tf.data.Dataset.from_tensor_slices((test_text, test_label)).batch(batch_size)
 results = end_to_end_model.evaluate(test_ds)
 
-end_to_end_model.save('models/neural_network.keras', include_optimizer=False, compile=False)
+end_to_end_model.save('models/neural_network.keras')
 print("Model saved to keras format")

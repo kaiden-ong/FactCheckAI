@@ -10,6 +10,7 @@ function Results({ result, reset }) {
     const model = result.Model === "svm" ? "Support Vector Classifier" : 
                     result.Model === "nb" ? "Multinomial Naive Bayes Classifier" :
                     result.Model === "rf" ? "Random Forest Classifier" :
+                    result.Model === "nn" ? "Neural Network" :
                     ""
     const prediction = result.Result;
     let prob = result.Probability*100;

@@ -62,22 +62,17 @@ if model_input in ["nb", "rf"]:
 
 # Predict using the model
 if model_input == "nn":
-    model = keras.models.load_model("models/nn.keras")
+    model = keras.models.load_model(modelFile)
     vectorized_article = vectorize_text(input_value)
-    vectorized_article = tf.squeeze(vectorized_article)
-    vectorized_article = tf.expand_dims(vectorized_article, 0)
     prediction = model.predict(vectorized_article, verbose=0)
-    result = round(prediction[0].item())
-    probability = (1 - prediction[0]).tolist()
-    probability = probability[0]
-
+    result = round(prediction[0][0])
+    probability = (1 - prediction[0][0])
 else:
     with open(modelFile, 'rb') as f:
         model = pickle.load(f)
     result = model.predict(input_value)[0]
     probabilities = model.predict_proba(input_value)[0]
 
-    # Convert numpy types to native Python types
     result = int(result)
     probabilities = probabilities.tolist()
     probability = [round(prob, 5) for prob in probabilities][0]
