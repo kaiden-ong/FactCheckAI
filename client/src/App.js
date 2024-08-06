@@ -21,7 +21,7 @@ function App() {
   // TODO: Make pressing enter same as handleSubmit
   const handleSubmit = async () => {
     let articleText = await parseHTML(input);
-    if (articleText === "INVALID URL") {
+    if (articleText === "INVALID URL FORMAT" || articleText === "CANNOT PARSE FROM URL") {
       setError(articleText);
       setTimeout(() => setError(''), 3000);
     } else {
@@ -104,27 +104,28 @@ async function parseHTML(URL) {
       return regex.test(URL);
   }
 
-  try {
-      if (validURL(URL)) {
-          const response = await fetch("/api/parser", {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ URL: URL })
-          });
-          const data = await response.json();
-          if (data.status === "success") {
-              return data.isURL;
-          } else {
-              return `Error: ${data.message}`;
-          }
+  
+  if (validURL(URL)) {
+    try {
+      const response = await fetch("/api/parser", {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ URL: URL })
+      });
+      const data = await response.json();
+      if (data.status === "success") {
+          return data.isURL;
       } else {
-          return "INVALID URL";
+          return "CANNOT PARSE FROM URL";
       }
-  } catch (error) {
+    } catch (error) {
       console.error('Error posting data:', error);
       return "Error posting data";
+    }
+  } else {
+      return "INVALID URL FORMAT";
   }
 }
 

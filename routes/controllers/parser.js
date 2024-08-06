@@ -77,10 +77,9 @@ router.post('/', async (req, res) => {
         // Uncomment the following line to use actual content instead of test data
         res.json({ status: "success", isURL: articleText }); 
     } catch (error) {
-        console.error('Error fetching or parsing data:', error.message);
-        res.status(500).json({
+        res.json({
             status: "error",
-            message: "Error fetching or parsing data",
+            message: "Error fetching URL",
             error: error.message
         });
     }
