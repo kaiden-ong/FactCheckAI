@@ -1,6 +1,7 @@
-data/*
+data/
 *node_modules/
-/public/build
+*build/
 *.vs/
 *.DS_Store
-__pycache__/*
+__pycache__/
+venv/
