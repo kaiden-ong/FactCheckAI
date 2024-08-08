@@ -6,3 +6,9 @@ data/
 __pycache__/
 venv/
 .vscode/
+terraform.tfstate
+terraform.tfstate.backup
+.terraform.lock.hcl
+.terraform/
+deploy/
+*.zip
