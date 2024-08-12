@@ -22,7 +22,7 @@ resource "azurerm_linux_web_app" "factcheck_lwa" {
   service_plan_id     = azurerm_service_plan.factcheck_sp.id
 
   site_config {
-    app_command_line = "npm start"
+    always_on        = false
     application_stack {
       node_version = "20-lts"
     }

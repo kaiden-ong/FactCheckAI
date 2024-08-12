@@ -17,14 +17,27 @@ function Results({ result, reset }) {
     prob = Math.round(prob * 1000) / 1000;
     let time = result.Time;
     time = Math.round(time * 1000) / 1000;
+    const input = result.Input;
 
     return (
         <div>
-            <h2>Our {model} thinks this article is <span style={{ textDecoration: 'underline' }}>{prediction}</span>!</h2>
+            <h2>
+                Our {model} thinks this article is 
+                <span className="highlighted-text"> {prediction}</span>!
+            </h2>
             <div>
-                <h3>Here's some cool statistics</h3>
-                <p>Probability:  {prob}%</p>
-                <p>Time Elapsed: {time} seconds</p>
+                <p><strong>The model input (max 8000 characters):</strong></p>
+                <div className="result-input-container-wrapper">
+                    <div className="result-input-container">
+                        <div className="result-input">
+                            <p>{input}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="statistics">
+                    <p>Probability: <span className="stat-value">{prob}%</span></p>
+                    <p>Time Elapsed: <span className="stat-value">{time} seconds</span></p>
+                </div>
             </div>
             <button id="submit_btn" className="try-another-btn-pushable" onClick={reset}>
                 <span className="try-another-btn-shadow"></span>

@@ -38,9 +38,9 @@ function App() {
       console.log(data);
       // const data = 0;
       if (result === 0) {
-        setResult({ "Result": "Fake News", "Probability": probability, "Time": time, "Model": model_used });
+        setResult({ "Result": "Fake News", "Probability": probability, "Time": time, "Model": model_used, "Input": articleText.substring(0,8000) });
       } else {
-        setResult({ "Result": "Real News", "Probability": 1-probability, "Time": time, "Model": model_used });
+        setResult({ "Result": "Real News", "Probability": 1-probability, "Time": time, "Model": model_used, "Input": articleText.substring(0,8000) });
       }
       setShowCheck(true);
       await delay(2000);
