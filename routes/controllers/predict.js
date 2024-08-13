@@ -5,7 +5,6 @@ const { spawn } = require('node:child_process');
 router.get('/classify', (req, res) => {
     const input = req.query.input;
     const model = req.query.model;
-    console.log(model);
     // Call the Python script with the input
     // res.json({ model: 'svm', prediction: 0, probabilities: 1, latency: 1.112 })
     const python = spawn('python', ['scripts/categorize_script.py', input, model], {

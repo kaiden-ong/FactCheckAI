@@ -2,20 +2,20 @@ import sys
 import pickle
 import json
 from textblob import TextBlob
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
-from sklearn.svm import SVC
-from sklearn.pipeline import Pipeline
 import time
-import numpy as np
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-import tensorflow as tf
-from urllib.parse import quote
-import warnings
 import keras
+import nltk
+import tensorflow as tf
 
 start_time = time.time()
+
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
 
 def vectorize_text(text):
     text = tf.expand_dims(text, -1)
