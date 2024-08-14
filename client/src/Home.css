@@ -1,4 +1,4 @@
-.App {
+.home {
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -30,7 +30,7 @@
   border-radius: 20px;
 }
 
-.App h1 {
+.home h1 {
   margin: .67em 0 0 0;
 }
 
