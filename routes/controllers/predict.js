@@ -5,21 +5,26 @@ const { spawn } = require('node:child_process');
 router.get('/classify', (req, res) => {
     const input = req.query.input;
     const model = req.query.model;
-    // Call the Python script with the input
-    // res.json({ model: 'svm', prediction: 0, probabilities: 1, latency: 1.112 })
+
+    if (!input || !model) {
+        return res.status(400).json({ error: 'Input and model parameters are required.' });
+    }
+
     const python = spawn('python', ['scripts/categorize_script.py', input, model], {
         env: { ...process.env, PYTHONIOENCODING: 'utf-8' }
     });
+
     let dataToSend = '';
     let responseSent = false;
+
     python.stdout.on('data', (data) => {
         dataToSend += data.toString();
     });
 
     python.stderr.on('data', (data) => {
-        console.error(`Error from python script: ${data}`);
+        console.error(`Error from Python script: ${data.toString()}`);
         if (!responseSent) {
-            res.status(500).send('Internal Server Error');
+            res.status(500).json({ error: 'Error from Python script', details: data.toString() });
             responseSent = true;
         }
     });
@@ -31,11 +36,20 @@ router.get('/classify', (req, res) => {
                     const result = JSON.parse(dataToSend);
                     res.json(result);
                 } catch (error) {
-                    res.status(500).send('Error parsing JSON response from Python script.');
+                    console.error('Error parsing JSON:', error.message);
+                    res.status(500).json({ error: 'Error parsing JSON response from Python script.' });
                 }
             } else {
-                res.status(500).send(`Python script exited with code ${code}`);
+                res.status(500).json({ error: `Python script exited with code ${code}` });
             }
+            responseSent = true;
+        }
+    });
+
+    python.on('error', (error) => {
+        console.error('Failed to start Python script:', error.message);
+        if (!responseSent) {
+            res.status(500).json({ error: 'Failed to start Python script', details: error.message });
             responseSent = true;
         }
     });
