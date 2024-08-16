@@ -1,26 +1,29 @@
 import React from 'react';
 import './NB.css';
+import { Link } from 'react-router-dom';
 
 function NB() {
     return (
         <div className="container">
           {/* Sidebar */}
-          <aside className="sidebar">
-            <h2>Dashboard</h2>
-            <nav>
-              <ul>
-                <li><a href="#model1">Model 1</a></li>
-                <li><a href="#model2">Model 2</a></li>
-                <li><a href="#model3">Model 3</a></li>
-              </ul>
-            </nav>
-          </aside>
+            <aside className="sidebar">
+                <h2>Dashboard</h2>
+                <nav>
+                    <ul>
+                        <li><Link to="/models">Introduction</Link></li>
+                        <li><Link to="/SVM">Support Vector Machines</Link></li>
+                        <li><Link to="/NB">Naive Bayes</Link></li>
+                        <li><Link to="/RF">Random Forests</Link></li>
+                        <li><Link to="/NN">Neural Network</Link></li>
+                    </ul>
+                </nav>
+            </aside>
     
           {/* Main Content */}
             <main className="main-content">
                 {/* Header */}
                 <header>
-                <h1>Naive Bayes Statistics</h1>
+                    <h1>Naive Bayes Statistics</h1>
                 </header>
         
                 {/* Key Metrics Summary */}

@@ -133,7 +133,8 @@ function Home() {
               </div>
             ) : (
               <div className="home-content">
-                <p>Enter the URL of a news article to see if it's real or fake! <br/>(Right now copy paste the whole news article)</p>
+                <p>Enter the URL of a news article to see if it's real or fake! <br/></p>
+                  {/* <br/>(Right now copy paste the whole news article)</p> */}
                 <div className="model-options">
                   <button
                     className={`model-button ${model === 'svm' ? 'selected' : ''}`}

@@ -1,15 +1,17 @@
 import React from 'react';
 import './Models.css';
+import { Link } from 'react-router-dom';
 
 function Models() {
     return (
         <div className="introduction-page-container">
           <nav className="side-nav">
             <ul>
-              <li><a href="#">Introduction</a></li>
-              <li><a href="#">Model 1</a></li>
-              <li><a href="#">Model 2</a></li>
-              <li><a href="#">Model 3</a></li>
+              <li><Link to="/models">Introduction</Link></li>
+              <li><Link to="/SVM">Support Vector Machines</Link></li>
+              <li><Link to="/NB">Naive Bayes</Link></li>
+              <li><Link to="/RF">Random Forests</Link></li>
+              <li><Link to="/NN">Neural Network</Link></li>
             </ul>
           </nav>
     
