@@ -41,6 +41,10 @@
   align-items: center;
 }
 
+.home-content p {
+  padding: 1rem 0;
+}
+
 textarea#news_url {
   margin: 10px;
   padding: 8px;
@@ -76,7 +80,7 @@ button#submit_btn:hover {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  margin: 1.5em 0;
+  margin: .5em 0;
 }
 
 .submit-btn-shadow {
