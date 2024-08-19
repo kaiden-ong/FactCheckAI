@@ -8,7 +8,6 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
 
 body {
@@ -20,7 +19,6 @@ body {
 .container {
     display: flex;
     height: 100vh;
-    overflow: hidden;
 }
 
 .sidebar {
@@ -34,10 +32,12 @@ body {
 .sidebar h2 {
     margin-bottom: 20px;
     font-size: 1.5rem;
+    text-align: center;
 }
 
 .sidebar nav ul {
     list-style-type: none;
+    padding: 0;
 }
 
 .sidebar nav ul li {
@@ -48,16 +48,26 @@ body {
     color: #fff;
     text-decoration: none;
     font-size: 1rem;
+    padding: 10px 20px;
+    display: block;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
 .sidebar nav ul li a:hover {
-    text-decoration: underline;
+    background-color: #555;
 }
+    
+.active-link {
+    background-color: #777;
+    font-weight: bold;
+  }
 
 .main-content {
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
+    background-color: #f4f4f4;
 }
 
 header {
@@ -69,24 +79,6 @@ header {
 
 header h1 {
     font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-.filters {
-    display: flex;
-    align-items: center;
-}
-
-.filters label {
-    margin-right: 10px;
-}
-
-.filters select,
-.filters input {
-    margin-right: 10px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
 }
 
 .metrics-summary {
@@ -112,7 +104,6 @@ header h1 {
 .metric-card p {
     font-size: 1.5rem;
     color: #333;
-    margin-top: 10px;
 }
 
 .graphs {
@@ -156,13 +147,16 @@ header h1 {
 }
 
 @media (max-width: 768px) {
-    .filters {
-        flex-direction: column;
-        align-items: flex-start;
+    .sidebar {
+        width: 200px;
+        padding: 15px;
     }
 
-    .filters select,
-    .filters input {
-        margin-bottom: 10px;
+    .main-content {
+        padding: 15px;
+    }
+
+    .metrics-summary {
+        grid-template-columns: 1fr;
     }
 }

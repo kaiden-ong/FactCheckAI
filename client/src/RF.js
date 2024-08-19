@@ -1,6 +1,6 @@
 import React from 'react';
 import './RF.css';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 
 function RF() {
@@ -11,11 +11,31 @@ function RF() {
                 <h2>Dashboard</h2>
                 <nav>
                     <ul>
-                        <li><Link to="/models">Introduction</Link></li>
-                        <li><Link to="/SVM">Support Vector Machines</Link></li>
-                        <li><Link to="/NB">Naive Bayes</Link></li>
-                        <li><Link to="/RF">Random Forests</Link></li>
-                        <li><Link to="/NN">Neural Network</Link></li>
+                        <li>
+                            <NavLink to="/models" className={({ isActive }) => isActive ? 'active-link' : ''}>
+                                Introduction
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/SVM" className={({ isActive }) => isActive ? 'active-link' : ''}>
+                                Support Vector Machines
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/NB" className={({ isActive }) => isActive ? 'active-link' : ''}>
+                                Naive Bayes
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/RF" className={({ isActive }) => isActive ? 'active-link' : ''}>
+                                Random Forests
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/NN" className={({ isActive }) => isActive ? 'active-link' : ''}>
+                                Neural Network
+                            </NavLink>
+                        </li>
                     </ul>
                 </nav>
             </aside>
@@ -24,7 +44,7 @@ function RF() {
             <main className="main-content">
                 {/* Header */}
                 <header>
-                    <h1>Naive Bayes Statistics</h1>
+                    <h1>Random Forest Statistics</h1>
                 </header>
         
                 {/* Key Metrics Summary */}
