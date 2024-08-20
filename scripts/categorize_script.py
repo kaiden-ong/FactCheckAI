@@ -17,6 +17,11 @@ try:
 except LookupError:
     nltk.download('punkt')
 
+try:
+    nltk.data.find('tokenizers/punk_tab')
+except LookupError:
+    nltk.download('punk_tab')
+
 def vectorize_text(text):
     text = tf.expand_dims(text, -1)
     return vectorize_layer(text)
