@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect} from 'react';
 import './Home.css';
 import Results from './Results';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,23 @@ function Home() {
   const textareaRef = useRef(null);
   const [model, setModel] = useState('svm');
 
+  useEffect(() => {
+    const textareaElement = textareaRef.current;
+
+    const handleKeyDown = (e) => {
+      if (e.keyCode === 'Enter' || e.keyCode === 13) {
+        e.preventDefault();
+        handleSubmit();
+      }
+    };
+
+    textareaElement.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      textareaElement.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []); 
+  
   const handleTextareaChange = (e) => {
     setInput(e.target.value);
     autoResizeTextarea();
