@@ -42,6 +42,9 @@ function Home() {
     if (articleText === "INVALID URL FORMAT" || articleText === "CANNOT PARSE FROM URL") {
       setError(articleText);
       setTimeout(() => setError(''), 3000);
+    } else if (articleText.length < 20) {
+      setError('Article is too short. Please enter a more substantial article.');
+      setTimeout(() => setError(''), 3000);
     } else {
       setIsLoading(true);
       const response = await fetch(`/api/predict/classify?input=${articleText.substring(0,8000)}&model=${model}`);
